@@ -3,7 +3,6 @@ module.exports = {
         var self = this;
         self.name = 'users';
         self.modelName = 'User';
-        self.components = ['Auth'];
     },
     methods:{
         /**
@@ -45,7 +44,15 @@ module.exports = {
                 else{
                     self.response.end(JSON.stringify({success:true}));
                 }
-            })
+            });
+            console.log(self.request.session);
+            if(self.request.session.count){
+                self.request.session.count++;
+            }
+            else{
+                self.request.session.count = 1;
+            }
+            console.log(self.request.session.count);
         },
         /**
          * @Method("delete");
@@ -80,6 +87,14 @@ module.exports = {
                     self.end(JSON.stringify(result));
                 }
             });
+        },
+        /**
+         * @Method("login");
+         * @RequestMethod("POST");
+         * @ContentType("application/json")
+         */
+        login:function(){
+
         }
     }
 };
