@@ -45,21 +45,13 @@ module.exports = {
                     self.response.end(JSON.stringify({success:true}));
                 }
             });
-            console.log(self.request.session);
-            if(self.request.session.count){
-                self.request.session.count++;
-            }
-            else{
-                self.request.session.count = 1;
-            }
-            console.log(self.request.session.count);
         },
         /**
          * @Method("delete");
          * @RequestMethod("GET");
          * @RequestMethod("DELETE");
          * @ContentType("application/json");
-         * @Uri("/delete");
+         * @Uri("/");
          */
         delete:function(){
             var self  = this;

@@ -33,14 +33,5 @@ module.exports = {
             //weekdaysShort :[],
             // weekdaysMin:[]
        // }
-    },
-    security:{
-        salt:''
-    },
-    session:{
-        secret:crypto.randomBytes(20).toString('hex'),
-        store:{
-            dbConnection:'session'
-        }
     }
 };
