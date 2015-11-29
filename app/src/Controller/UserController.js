@@ -1,31 +1,30 @@
+var passport = require('passport');
 module.exports = {
     __constructor:function(){
         var self = this;
         self.name = 'users';
         self.modelName = 'User';
     },
-    methods:{
+    methods: {
         /**
          * @Method("setup");
          * @RequestMethod("GET");
-         * @ContentType("application/json")
-         *
          */
-        setup:function(){
+        setup: function (req, res, next) {
             var self = this;
             self.User.save({
-                username:'phydokz',
-                password:'123teste',
-                role:'admin',
-                'profile.email':'phydokz@hotmail.com',
-                'profile.fullname':"Pablo Henrick Diniz",
-                'profile.birthdate':Date.now()
-            },function(err){
-                if(err){
-                    self.end(JSON.stringify(err));
+                username: 'phydokz',
+                password: '123teste',
+                role: 'admin',
+                'profile.email': 'phydokz@hotmail.com',
+                'profile.fullname': "Pablo Henrick Diniz",
+                'profile.birthdate': Date.now()
+            }, function (err) {
+                if (err) {
+                    res.end(JSON.stringify(err));
                 }
-                else{
-                    self.end(JSON.stringify({success:true}));
+                else {
+                    res.end(JSON.stringify({success: true}));
                 }
             });
         },
@@ -33,61 +32,63 @@ module.exports = {
          * @Method("add");
          * @RequestMethod("POST");
          * @Uri("/");
-         * @ContentType("application/json")
          */
-        add:function(){
+        add: function (req, res, next) {
             var self = this;
-            self.User.save(self.request.body,function(err){
-                if(err){
-                    self.response.end(JSON.stringify(err));
+            self.User.save(req.body, function (err) {
+                if (err) {
+                    res.end(JSON.stringify(err));
                 }
-                else{
-                    self.response.end(JSON.stringify({success:true}));
+                else {
+                    res.end(JSON.stringify({success: true}));
                 }
             });
+            console.log(req.session);
         },
         /**
          * @Method("delete");
          * @RequestMethod("GET");
          * @RequestMethod("DELETE");
-         * @ContentType("application/json");
          * @Uri("/");
+         * @allow("admin");
          */
-        delete:function(){
-            var self  = this;
-            self.User.remove({},function(err){
-                if(err){
-                    self.end(JSON.stringify(err));
+        delete: function (req, res, next) {
+            var self = this;
+            self.User.remove({}, function (err) {
+                if (err) {
+                    res.end(JSON.stringify(err));
                 }
-                else{
-                    self.end(JSON.stringify({success:true}));
+                else {
+                    res.end(JSON.stringify({success: true}));
                 }
             });
+            console.log(req.session.passport.user);
         },
         /**
          * @Method("list");
          * @RequestMethod("GET");
-         * @ContentType("application/json")
+         * @allow("admin");
          */
-        list:function(){
+        list: function (req, res, next) {
             var self = this;
-            self.User.find({role:'admin'},function(err,result){
-                if(err){
-                    self.end(JSON.stringify([]));
+            self.User.find({role: 'admin'}, function (err, result) {
+                if (err) {
+                    res.end(JSON.stringify([]));
                 }
-                else{
-                    self.end(JSON.stringify(result));
+                else {
+                    res.end(JSON.stringify(result));
                 }
             });
+            console.log(req.session.passport.user);
+
         },
         /**
          * @Method("login");
          * @RequestMethod("POST");
-         * @ContentType("application/json")
          */
-        login:function(){
-
-        }
+        login: [passport.authenticate('local'),function(req,res,next){
+            res.end(JSON.stringify(req.session.passport.user));
+        }]
     }
 };
 

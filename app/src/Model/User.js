@@ -1,7 +1,7 @@
 var crypto = require('crypto');
 var Schema = require('mongoose').Schema;
 var bcrypt = require('bcrypt');
-var defaultModel = require('node-mvc/Model/Model');
+var defaultModel = require('node-mvc').Model;
 var deepmerge = require('deepmerge');
 
 var User = {
@@ -82,6 +82,23 @@ var User = {
                 type:Date,
                 required:true
             }
+        }
+    },
+    _methods:{
+        checkPassword:function(password){
+            return bcrypt.compareSync(password,this.password);
+        },
+        serialize:function(){
+            return JSON.stringify({
+                _id:this.id,
+                role:this.role,
+                active:this.active,
+                profile:{
+                    email:this.profile.email,
+                    fullname:this.profile.fullname,
+                    birthdate:this.profile.birthdate
+                }
+            });
         }
     }
 };
