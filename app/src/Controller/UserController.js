@@ -43,7 +43,6 @@ module.exports = {
                     res.end(JSON.stringify({success: true}));
                 }
             });
-            console.log(req.session);
         },
         /**
          * @Method("delete");
@@ -62,7 +61,6 @@ module.exports = {
                     res.end(JSON.stringify({success: true}));
                 }
             });
-            console.log(req.session.passport.user);
         },
         /**
          * @Method("list");
@@ -79,7 +77,6 @@ module.exports = {
                     res.end(JSON.stringify(result));
                 }
             });
-            console.log(req.session.passport.user);
 
         },
         /**

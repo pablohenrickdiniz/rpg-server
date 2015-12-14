@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Load</title>
+    <style type="text/css">
+        #jonh{
+            position: absolute;
+            z-index: 2;
+            width: 200px;
+            height: auto;
+            top: 40px;
+            left: -200px;
+            transition-property: left;
+            transition-duration: 3s;
+        }
+        
+        #loja{
+            position: absolute;
+            z-index: 1;
+        }
+
+        #container{
+            width: 400px;
+            height:224px;
+            overflow: hidden;
+            position: relative;
+        }
+    </style>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script>
+        function move_up(){
+            setTimeout(function() {
+                $("#jonh").css({
+                    left: 0
+                });
+                move_back();
+            },19000);
+        }
+        function move_back(){
+            setTimeout(function(){
+                $("#jonh").css({
+                    left:-200
+                });
+                move_up();
+            },9000);
+        }
+
+        move_up();
+    </script>
+</head>
+<body>
+<div id="container">
+    <img src="e1IneGq.gif" alt="" id="jonh"/>
+    <img src="ezgif.com-video-to-gif.gif" alt="" id="loja"/>
+</div>
+</body>
+</html>
