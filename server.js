@@ -1,1 +1,1 @@
-require('node-mvc/config/bootstrap');
+require('rpg-node-mvc').bootstrap();

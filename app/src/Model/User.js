@@ -1,7 +1,7 @@
 var crypto = require('crypto');
 var Schema = require('mongoose').Schema;
 var bcrypt = require('bcrypt');
-var defaultModel = require('node-mvc').Model;
+var defaultModel = require('rpg-node-mvc').Model;
 var deepmerge = require('deepmerge');
 
 var User = {

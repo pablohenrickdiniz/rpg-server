@@ -1,4 +1,9 @@
-var passport = require('passport');
+var passport = require('passport'),
+    bodyParser = require('body-parser'),
+    jsonParser = bodyParser.json(),
+    bcrypt = require('bcrypt'),
+    crypto = require('crypto');
+
 module.exports = {
     __constructor:function(){
         var self = this;
@@ -13,7 +18,8 @@ module.exports = {
         setup: function (req, res, next) {
             var self = this;
             self.User.save({
-                username: 'phydokz',
+                username: 'phydokz@hotmail.com' +
+                '',
                 password: '123teste',
                 role: 'admin',
                 'profile.email': 'phydokz@hotmail.com',
@@ -83,8 +89,36 @@ module.exports = {
          * @Method("login");
          * @RequestMethod("POST");
          */
-        login: [passport.authenticate('local'),function(req,res,next){
-            res.end(JSON.stringify(req.session.passport.user));
+        login: [jsonParser,function(req,res,next){
+            var self = this;
+            self.User.findOne({username:req.body.username},function(doc,erro){
+                if(erro){
+                    res.end(JSON.stringify({
+                        success:false,
+                        error:'Usuário ou senha inválidos'
+                    }));
+                }
+                else{
+                    bcrypt.compare(req.body.password,doc.password,function(success){
+                        if(success){
+                            res.end({
+                                success:true,
+                                auth:{
+                                    userId:doc._id,
+                                    role:doc.role,
+                                    accessToken:crypto.randomBytes(20).toString('hex')
+                                }
+                            });
+                        }
+                        else{
+                            res.end({
+                                success:false
+                            });
+                        }
+                    });
+                }
+            });
+
         }]
     }
 };
