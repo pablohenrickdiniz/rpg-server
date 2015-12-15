@@ -18,8 +18,7 @@ module.exports = {
         setup: function (req, res, next) {
             var self = this;
             self.User.save({
-                username: 'phydokz@hotmail.com' +
-                '',
+                username: 'phydokz@hotmail.com',
                 password: '123teste',
                 role: 'admin',
                 'profile.email': 'phydokz@hotmail.com',
@@ -54,7 +53,7 @@ module.exports = {
          * @Method("delete");
          * @RequestMethod("GET");
          * @RequestMethod("DELETE");
-         * @Uri("/");
+         * @Uri("/delete");
          * @allow("admin");
          */
         delete: function (req, res, next) {
@@ -91,28 +90,32 @@ module.exports = {
          */
         login: [jsonParser,function(req,res,next){
             var self = this;
-            self.User.findOne({username:req.body.username},function(doc,erro){
-                if(erro){
-                    res.end(JSON.stringify({
+            var callback = function(data){
+                res.end(JSON.stringify(data));
+            };
+
+            self.User.findOne({username:req.body.username},function(err,doc){
+                if(err || !doc){
+                    callback({
                         success:false,
                         error:'Usuário ou senha inválidos'
-                    }));
+                    });
                 }
                 else{
-                    bcrypt.compare(req.body.password,doc.password,function(success){
-                        if(success){
-                            res.end({
+                    bcrypt.compare(req.body.password,doc.password,function(err,res){
+                        if(err || !res){
+                            callback({
+                                success:false
+                            });
+                        }
+                        else{
+                            callback({
                                 success:true,
                                 auth:{
                                     userId:doc._id,
                                     role:doc.role,
                                     accessToken:crypto.randomBytes(20).toString('hex')
                                 }
-                            });
-                        }
-                        else{
-                            res.end({
-                                success:false
                             });
                         }
                     });
