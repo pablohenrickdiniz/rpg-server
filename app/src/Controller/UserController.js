@@ -90,6 +90,7 @@ module.exports = {
          */
         login: [jsonParser,function(req,res,next){
             var self = this;
+
             var callback = function(data){
                 res.end(JSON.stringify(data));
             };
@@ -109,20 +110,30 @@ module.exports = {
                             });
                         }
                         else{
-                            callback({
-                                success:true,
-                                auth:{
-                                    userId:doc._id,
-                                    role:doc.role,
-                                    accessToken:crypto.randomBytes(20).toString('hex')
-                                }
+                            doc.generateAccessToken(function(accessToken){
+                                callback({
+                                    success:true,
+                                    auth:{
+                                        userId:doc._id,
+                                        role:doc.role,
+                                        accessToken:accessToken
+                                    }
+                                });
                             });
                         }
                     });
                 }
             });
 
-        }]
+        }],
+        /**
+         * @Method("logout");
+         * @RequestMethod("GET");
+         */
+        logout:function(req,res,next){
+            req.session.destroy();
+            res.send(JSON.stringify({success:true}));
+        }
     }
 };
 

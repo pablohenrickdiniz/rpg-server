@@ -82,6 +82,12 @@ var User = {
                 type:Date,
                 required:true
             }
+        },
+        accessToken:{
+            type:String,
+            required:true,
+            index:{unique:true,sparse:true},
+            trim:true
         }
     },
     _methods:{
@@ -97,6 +103,19 @@ var User = {
                     email:this.profile.email,
                     fullname:this.profile.fullname,
                     birthdate:this.profile.birthdate
+                }
+            });
+        },
+        generateAccessToken:function(success){
+            var accessToken = crypto.randomBytes(20).toString('hex');
+
+            this.model('User').find({accessToken:accessToken}, function (err, docs) {
+                if (!docs.length) {
+                    this.accessToken = accessToken;
+                    success(accessToken);
+                }
+                else {
+                    this.generateAccessToken(success);
                 }
             });
         }
