@@ -89,6 +89,7 @@ module.exports = {
          * @RequestMethod("POST");
          */
         login: [jsonParser,function(req,res,next){
+            console.log('login');
             var self = this;
 
             var callback = function(data){
@@ -113,11 +114,12 @@ module.exports = {
                             doc.generateAccessToken(function(accessToken){
                                 req.session.accessToken = accessToken;
                                 req.session.role = doc.role;
+                                req.session.userID = doc._id;
                                 callback({
                                     success:true,
                                     auth:{
                                         accessToken:accessToken,
-                                        sessionId:req.sessionId,
+                                        sessionID:req.sessionID,
                                         user:doc.getAuthProps()
                                     }
                                 });
@@ -133,8 +135,43 @@ module.exports = {
          * @RequestMethod("GET");
          */
         logout:function(req,res,next){
-            req.session.destroy();
-            res.send(JSON.stringify({success:true}));
+            console.log('logout');
+            req.session.destroy(function(err){
+                res.end(JSON.stringify({success:!err}));
+            });
+        },
+        /**
+         * @Method("loadSession");
+         * @RequestMethod("GET");
+         * @Uri("/load-session");
+         */
+        loadSession:function(req,res,next){
+            console.log('load session');
+            var self = this;
+            if(req.session && req.sessionID && req.session.accessToken && req.session.userID){
+
+                self.User.findOne({_id:req.session.userID},function(err,doc){
+                    if(err || !doc){
+                        req.session.destroy();
+                        res.end(JSON.stringify({
+                            success:false
+                        }));
+                    }
+                    else{
+                        res.end(JSON.stringify({
+                            success:true,
+                            auth:{
+                                accessToken:req.session.accessToken,
+                                sessionID:req.sessionID,
+                                user:doc.getAuthProps()
+                            }
+                        }));
+                    }
+                });
+            }
+            else{
+                res.end(JSON.stringify({success:false}));
+            }
         }
     }
 };
