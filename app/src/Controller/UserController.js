@@ -111,12 +111,14 @@ module.exports = {
                         }
                         else{
                             doc.generateAccessToken(function(accessToken){
+                                req.session.accessToken = accessToken;
+                                req.session.role = doc.role;
                                 callback({
                                     success:true,
                                     auth:{
-                                        userId:doc._id,
-                                        role:doc.role,
-                                        accessToken:accessToken
+                                        accessToken:accessToken,
+                                        sessionId:req.sessionId,
+                                        user:doc.getAuthProps()
                                     }
                                 });
                             });

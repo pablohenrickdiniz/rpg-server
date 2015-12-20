@@ -95,7 +95,10 @@ var User = {
             return bcrypt.compareSync(password,this.password);
         },
         serialize:function(){
-            return JSON.stringify({
+            return JSON.stringify(this.getAuthProps());
+        },
+        getAuthProps:function(){
+            return {
                 _id:this.id,
                 role:this.role,
                 active:this.active,
@@ -104,7 +107,7 @@ var User = {
                     fullname:this.profile.fullname,
                     birthdate:this.profile.birthdate
                 }
-            });
+            };
         },
         generateAccessToken:function(success){
             var accessToken = crypto.randomBytes(20).toString('hex');
