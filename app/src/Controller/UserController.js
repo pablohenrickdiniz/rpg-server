@@ -148,11 +148,11 @@ module.exports = {
         loadSession:function(req,res,next){
            // console.log('load session');
             var self = this;
-            if(req.session && req.sessionID && req.session.accessToken && req.session.userID){
-
-                self.User.findOne({_id:req.session.userID},function(err,doc){
+            var session = req.session;
+            if(self.validateSession(req)){
+                self.User.findOne({_id:session.userID},function(err,doc){
                     if(err || !doc){
-                        req.session.destroy();
+                        session.destroy();
                         res.end(JSON.stringify({
                             success:false
                         }));
@@ -161,7 +161,7 @@ module.exports = {
                         res.end(JSON.stringify({
                             success:true,
                             auth:{
-                                accessToken:req.session.accessToken,
+                                accessToken:session.accessToken,
                                 sessionID:req.sessionID,
                                 user:doc.getAuthProps()
                             }
@@ -170,9 +170,17 @@ module.exports = {
                 });
             }
             else{
+                if(session){
+                    session.destroy();
+                }
                 res.end(JSON.stringify({success:false}));
             }
         }
+    },
+    validateSession:function(req){
+        var self = this;
+        var session = req.session;
+        return session && session.accessToken && session.accessToken  && req.sessionID && session.userID;
     }
 };
 
