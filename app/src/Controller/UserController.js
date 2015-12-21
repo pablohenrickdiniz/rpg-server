@@ -89,7 +89,7 @@ module.exports = {
          * @RequestMethod("POST");
          */
         login: [jsonParser,function(req,res,next){
-            console.log('login');
+           // console.log('login');
             var self = this;
 
             var callback = function(data){
@@ -135,7 +135,7 @@ module.exports = {
          * @RequestMethod("GET");
          */
         logout:function(req,res,next){
-            console.log('logout');
+           // console.log('logout');
             req.session.destroy(function(err){
                 res.end(JSON.stringify({success:!err}));
             });
@@ -146,7 +146,7 @@ module.exports = {
          * @Uri("/load-session");
          */
         loadSession:function(req,res,next){
-            console.log('load session');
+           // console.log('load session');
             var self = this;
             if(req.session && req.sessionID && req.session.accessToken && req.session.userID){
 
