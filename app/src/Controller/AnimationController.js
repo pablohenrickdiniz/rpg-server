@@ -3,7 +3,8 @@
  */
 var paths = require('rpg-node-mvc').paths;
 var fileFilter = require(paths.APP_FILTER+'/FileFilter');
-
+var ImageComponent = require(paths.APP_COMPONENT+'/ImageComponent');
+var crypto = require('crypto');
 
 module.exports = {
     __constructor:function(){
@@ -18,10 +19,23 @@ module.exports = {
          */
         upload:[fileFilter,function(req,res,next){
             var files = req.files;
-            console.log(files);
-            res.end(JSON.stringify({
-                success:true
-            }));
+            if(files[0] != undefined){
+                var name = crypto.randomBytes(20).toString('hex');
+                var result = [];
+                ImageComponent.createImage(files[0],{
+                    name:name,
+                    dir:paths.WWW_ROOT+'/animations'
+                },function(created){
+                    res.end(JSON.stringify({
+                        success:created
+                    }));
+                });
+            }
+            else{
+                res.end(JSON.stringify({
+                    success:false
+                }));
+            }
         }]
     }
 };
