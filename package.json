@@ -1,27 +1,9 @@
 {
   "name": "rpg-server",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "dependencies": {
-    "annotation": "^0.1.0",
-    "bcrypt": "^0.8.5",
-    "deepmerge": "^0.2.10",
-    "body-parser": "^1.14.1",
-    "express": "^4.13.3",
-    "jsonwebtoken": "^5.4.1",
-    "moment": "^2.10.6",
-    "lodash": "^3.10.1",
-    "morgan": "^1.6.1",
-    "mongoose": "^4.3.1",
-    "multer": "^1.1.0",
-    "passport": "^0.3.2",
-    "passport-http": "^0.3.0",
-    "rpg-node-mvc": "^0.0.1",
-    "passport-local": "^1.0.0",
-    "ucfirst": "^1.0.0",
-    "validate.js": "^0.9.0"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -31,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/pablohenrickdiniz/RPG-Server.git"
   },
-  "author": "Pablo Henrick Diniz",
+  "author": "Pablo Henrick Diniz <phydokz@hotmail.com> (https://github.com/pablohenrickdiniz/)",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/pablohenrickdiniz/RPG-Server/issues"
