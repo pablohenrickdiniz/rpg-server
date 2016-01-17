@@ -157,7 +157,7 @@ var RpgServer = function() {
  */
 var zapp = new RpgServer();
 zapp.initialize(function(){
-    zapp.start();
+   // zapp.start();
 });
 
 
