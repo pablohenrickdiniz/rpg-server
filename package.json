@@ -1,5 +1,5 @@
 {
-  "name": "rpg-server-open",
+  "name": "rpg-server",
   "version": "1.0.0",
   "description": "The OpenShift `nodejs` cartridge documentation can be found at:",
   "main": "server.js",
