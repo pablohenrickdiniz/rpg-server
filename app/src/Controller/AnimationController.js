@@ -30,7 +30,9 @@ module.exports = {
                 },function(created,path){
                     if(created){
                         self.Animation.save({
-                            file:path
+                            file:path,
+                            width:req.body.width,
+                            height:req.body.height
                         },function(err,doc){
                             if(err){
                                 res.end(JSON.stringify({
@@ -88,22 +90,13 @@ module.exports = {
                 }
                 else{
                     var page = req.query.page | 1;
-                    self.Animation.paginate({}, {page:page,limit:10,sort:{created:'desc'}},function(err,result){
-                        if(err){
-                            res.json({
-                                success:false,
-                                errors:err
-                            });
-                            res.end();
-                        }
-                        else{
-                            res.json({
-                                success:true,
-                                count:c,
-                                animations:result.docs
-                            });
-                            res.end();
-                        }
+                    self.Animation.paginate({}, {page:page,limit:8,sort:{created:'desc'}}).then(function(result){
+                        res.json({
+                            success:true,
+                            count:c,
+                            animations:result.docs
+                        });
+                        res.end();
                     });
                 }
             });

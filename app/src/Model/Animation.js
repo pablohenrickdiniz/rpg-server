@@ -6,6 +6,12 @@ var Animation = {
     _messages : {
         file:{
             required:'A imagem deve ser enviada!'
+        },
+        width:{
+            required:'A largura deve ser informada!'
+        },
+        height:{
+            required:'A altura deve ser informada!'
         }
     },
     _schema : {
@@ -13,6 +19,16 @@ var Animation = {
             type:String,
             required:true,
             trim:true
+        },
+        width:{
+            type:Number,
+            required:true,
+            default:0
+        },
+        height:{
+            type:Number,
+            required:true,
+            default:0
         },
         created:{
             type:Date,
