@@ -18,17 +18,14 @@ module.exports = {
         if(config.name != undefined && self.exts[file.mimetype] != undefined){
             var ext = self.exts[file.mimetype];
             config = deepmerge(this.defaults,config);
-            var name = config.name;
-            var newPath = config.dir+'/'+name+'.'+ext;
-            if(!File.exists(config.dir)){
-                fs.mkdir(config.dir);
-            }
+            var name = config.name+'.'+ext;
+            var newPath = config.dir+'/'+name;
             fs.rename(file.path,newPath,function(err){
-                callback(!err);
+                callback(!err,name);
             });
         }
         else{
-            callback(false);
+            callback(false,'');
         }
     }
 };
