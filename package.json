@@ -1,9 +1,11 @@
 {
-  "name": "rpg-server",
+  "name": "rpg-server-open",
   "version": "1.0.0",
-  "description": "",
+  "description": "The OpenShift `nodejs` cartridge documentation can be found at:",
   "main": "server.js",
-  "dependencies": {},
+  "dependencies": {
+    "rpg-node-mvc": "^1.0.4"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,12 +13,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pablohenrickdiniz/RPG-Server.git"
+    "url": "ssh://569bbf047628e18c6b0001a6@rpgserver-nodejswebservice.rhcloud.com/~/git/rpgserver.git/"
   },
   "author": "Pablo Henrick Diniz <phydokz@hotmail.com> (https://github.com/pablohenrickdiniz/)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/pablohenrickdiniz/RPG-Server/issues"
-  },
-  "homepage": "https://github.com/pablohenrickdiniz/RPG-Server#readme"
+  "license": "ISC"
 }
