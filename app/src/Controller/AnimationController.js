@@ -27,7 +27,7 @@ module.exports = {
                 var result = [];
                 ImageComponent.createImage(files[0],{
                     name:name,
-                    dir:paths.WWW_ROOT+'/animations'
+                    dir:path.join(paths('webroot'),'animations')
                 },function(created,path){
                     if(created){
                         self.Animation.save({
@@ -71,21 +71,19 @@ module.exports = {
             var self = this;
             self.Animation.count({},function(err,c){
                 if(err){
-                    self.json({
+                    self.endJson({
                         success:false,
                         errors:err
                     });
-                    res.end();
                 }
                 else{
                     var page = req.query.page | 1;
                     self.Animation.paginate({}, {page:page,limit:8,sort:{created:'desc'}}).then(function(result){
-                        res.json({
+                        self.endJson({
                             success:true,
                             count:c,
                             animations:result.docs
                         });
-                        res.end();
                     });
                 }
             });
@@ -111,7 +109,7 @@ module.exports = {
                             });
                         }
                         else{
-                            fs.unlink(paths.WWW_ROOT+'/animations/'+doc.file,function(err){
+                            fs.unlink(path.join(paths('webroot'),'animations',doc.file),function(err){
                                 self.endJson({
                                     success:true
                                 });
