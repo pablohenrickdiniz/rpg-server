@@ -44,7 +44,7 @@ module.exports = {
                             else{
                                 res.end(JSON.stringify({
                                     success:true,
-                                    id:doc._id
+                                    animation:doc
                                 }));
                             }
                         });
@@ -77,8 +77,22 @@ module.exports = {
                     });
                 }
                 else{
-                    var page = req.query.page | 1;
-                    self.Animation.paginate({}, {page:page,limit:8,sort:{created:'desc'}}).then(function(result){
+                    var conditions = {
+                        sort:{created:'desc'}
+                    };
+
+                    var limit = req.query.limit | null;
+                    var page = req.query.page | null;
+
+
+                    conditions.limit = limit?limit:c;
+
+                    if(page){
+                        conditions.page = page;
+                    }
+
+
+                    self.Animation.paginate({}, conditions).then(function(result){
                         self.endJson({
                             success:true,
                             count:c,
