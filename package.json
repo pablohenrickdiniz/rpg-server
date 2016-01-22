@@ -9,7 +9,7 @@
   "dependencies": {
     "ejs": "2.3.3",
     "express": "4.13.3",
-    "rpg-node-mvc": "1.1.0",
+    "rpg-node-mvc": "1.1.1",
     "passport":"0.3.2",
     "body-parser":"1.14.2",
     "bcrypt":"0.8.5",
