@@ -1,20 +1,35 @@
 {
-  "name": "rpg-server",
-  "version": "1.0.0",
-  "description": "The OpenShift `nodejs` cartridge documentation can be found at:",
-  "main": "server.js",
-  "dependencies": {
-    "rpg-node-mvc": "^1.0.4"
-  },
-  "devDependencies": {},
+  "name": "node-js-getting-started",
+  "version": "0.1.5",
+  "description": "A sample Node.js app using Express 4",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
+  },
+  "dependencies": {
+    "ejs": "2.3.3",
+    "express": "4.13.3",
+    "rpg-node-mvc": "1.1.0",
+    "passport":"0.3.2",
+    "body-parser":"1.14.2",
+    "bcrypt":"0.8.5",
+    "mongoose":"4.3.6",
+    "deepmerge":"0.2.10",
+    "connect-mongo":"1.1.0",
+    "app-root-path":"1.0.0"
+  },
+  "engines": {
+    "node": "5.4.1",
+    "npm":"3.3.12"
   },
   "repository": {
     "type": "git",
-    "url": "ssh://569bbf047628e18c6b0001a6@rpgserver-nodejswebservice.rhcloud.com/~/git/rpgserver.git/"
+    "url": "https://github.com/heroku/node-js-getting-started"
   },
-  "author": "Pablo Henrick Diniz <phydokz@hotmail.com> (https://github.com/pablohenrickdiniz/)",
-  "license": "ISC"
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
 }

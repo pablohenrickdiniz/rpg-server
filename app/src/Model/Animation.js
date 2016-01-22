@@ -35,7 +35,8 @@ var Animation = {
             required:true,
             default:Date.now
         }
-    }
+    },
+    defaultConnection:'rpgbuilder'
 };
 
 Animation = deepmerge(defaultModel,Animation);

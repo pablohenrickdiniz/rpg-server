@@ -175,6 +175,21 @@ module.exports = {
                 }
                 res.end(JSON.stringify({success:false}));
             }
+        },
+        /**
+         * @Method("countSession");
+         * @RequestMethod("GET");
+         */
+        countSession:function(req,res){
+            if(req.session.count){
+                req.session.count++;
+            }
+            else{
+                req.session.count = 1;
+            }
+            this.endJson({
+                count:req.session.count
+            });
         }
     },
     validateSession:function(req){

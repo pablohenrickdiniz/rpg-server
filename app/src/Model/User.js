@@ -122,7 +122,8 @@ var User = {
                 }
             });
         }
-    }
+    },
+    defaultConnection:'rpgbuilder'
 };
 
 User = deepmerge(defaultModel,User);

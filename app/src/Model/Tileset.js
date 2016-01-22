@@ -33,7 +33,8 @@ var Tileset = {
                 default:32
             }
         }
-    }
+    },
+    defaultConnection:'rpgbuilder'
 };
 
 Tileset = deepmerge(defaultModel,Tileset);

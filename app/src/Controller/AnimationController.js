@@ -2,8 +2,9 @@
  * Created by pablo on 12/01/16.
  */
 var paths = require('rpg-node-mvc').paths;
-var fileFilter = require(paths.APP_FILTER+'/FileFilter');
-var ImageComponent = require(paths.APP_COMPONENT+'/ImageComponent');
+var path = require('path');
+var fileFilter = require(path.join(paths('filters'),'FileFilter'));
+var ImageComponent = require(path.join(paths('components'),'ImageComponent'));
 var crypto = require('crypto');
 var fs = require('fs');
 
@@ -48,6 +49,11 @@ module.exports = {
                             }
                         });
                     }
+                    else{
+                        res.end(JSON.stringify({
+                            success:false
+                        }));
+                    }
                 });
             }
             else{
@@ -56,23 +62,6 @@ module.exports = {
                 }));
             }
         }],
-        /**
-         * @Method("getFile");
-         * @RequestMethod("GET");
-         * @Uri("/file/:name");
-         */
-        getFile:function(req,res,next){
-            var name = req.params.name;
-            var dir = paths.WWW_ROOT+'/animations';
-            var filePath = dir+'/'+name;
-            var stat = fs.statSync(filePath);
-            res.writeHead(200, {
-                'Content-Type': 'application/octet-stream',
-                'Content-Length': stat.size
-            });
-            var readStream = fs.createReadStream(filePath);
-            readStream.pipe(res);
-        },
         /**
          * @Method("list");
          * @RequestMethod("GET");

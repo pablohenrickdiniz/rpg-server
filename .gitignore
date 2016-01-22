@@ -1,4 +1,6 @@
-node_modules/*
-!node_modules/lib
-bower_components
+node_modules
+.env
+Dockerfile
+docker-compose.yml
 .idea
+
