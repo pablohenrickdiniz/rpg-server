@@ -33,7 +33,8 @@ module.exports = {
                         self.Animation.save({
                             file:path,
                             width:req.body.width,
-                            height:req.body.height
+                            height:req.body.height,
+                            created:Date.now()
                         },function(err,doc){
                             if(err){
                                 res.end(JSON.stringify({
@@ -108,26 +109,38 @@ module.exports = {
          */
         delete:function(req,res,next){
             var id = req.query.id;
+            id = [].concat(id);
+
             var self = this;
-            self.Animation.findOne({_id:id},function(err,doc){
-                if(err || !doc){
+            self.Animation.find({_id:{$in:id}},function(err,docs){
+                if(err || docs.length == 0){
                     self.endJson({
                         success:true
                     });
                 }
                 else{
-                    self.Animation.remove({_id:id},function(err){
+                    self.Animation.remove({_id:{$in:id}},function(err){
                         if(err){
+                            console.log('b');
                             self.endJson({
                                 success:false
                             });
                         }
                         else{
-                            fs.unlink(path.join(paths('webroot'),'animations',doc.file),function(err){
-                                self.endJson({
-                                    success:true
-                                });
-                            });
+                            var callback = function(docs){
+                                if(docs.length > 0){
+                                    var doc = docs.pop();
+                                    fs.unlink(path.join(paths('webroot'),'animations',doc.file),function(err){
+                                        callback(docs);
+                                    });
+                                }
+                                else{
+                                    self.endJson({
+                                        success:true
+                                    });
+                                }
+                            };
+                            callback(docs);
                         }
                     });
                 }

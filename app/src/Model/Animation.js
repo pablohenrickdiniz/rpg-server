@@ -8,10 +8,15 @@ var Animation = {
             required:'A imagem deve ser enviada!'
         },
         width:{
-            required:'A largura deve ser informada!'
+            required:'A largura deve ser informada!',
+            Number:'valor inválido para largura'
         },
         height:{
-            required:'A altura deve ser informada!'
+            required:'A altura deve ser informada!',
+            Number:'valor inválido para altura'
+        },
+        created:{
+            Date:'Essa data é inválida'
         }
     },
     _schema : {
