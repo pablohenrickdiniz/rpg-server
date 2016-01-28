@@ -45,7 +45,8 @@ module.exports = {
                             else{
                                 res.end(JSON.stringify({
                                     success:true,
-                                    animation:doc
+                                    doc:doc,
+                                    type:'animations'
                                 }));
                             }
                         });

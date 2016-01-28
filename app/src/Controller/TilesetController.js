@@ -1,3 +1,13 @@
+/**
+ * Created by pablo on 12/01/16.
+ */
+var paths = require('rpg-node-mvc').paths;
+var path = require('path');
+var fileFilter = require(path.join(paths('filters'),'FileFilter'));
+var ImageComponent = require(path.join(paths('components'),'ImageComponent'));
+var crypto = require('crypto');
+var fs = require('fs');
+
 module.exports = {
     __constructor:function(){
         var self = this;
@@ -6,12 +16,135 @@ module.exports = {
     },
     methods:{
         /**
-         * @Method("add");
-         * @request("GET");
-         * @filter("File");
+         * @Method("upload");
+         * @RequestMethod("POST");
          */
-        add:function(){
+        upload:[fileFilter,function(req,res,next){
+            var files = req.files;
+            var self = this;
+            if(files[0] != undefined){
+                var name = crypto.randomBytes(20).toString('hex');
+                var result = [];
+                ImageComponent.createImage(files[0],{
+                    name:name,
+                    dir:path.join(paths('webroot'),'tilesets')
+                },function(created,path){
+                    if(created){
+                        self.Tileset.save({
+                            file:path,
+                            width:req.body.width,
+                            height:req.body.height,
+                            created:Date.now()
+                        },function(err,doc){
+                            if(err){
+                                res.end(JSON.stringify({
+                                    errors:err,
+                                    success:false
+                                }));
+                            }
+                            else{
+                                res.end(JSON.stringify({
+                                    success:true,
+                                    doc:doc,
+                                    type:'tilesets'
+                                }));
+                            }
+                        });
+                    }
+                    else{
+                        res.end(JSON.stringify({
+                            success:false
+                        }));
+                    }
+                });
+            }
+            else{
+                res.end(JSON.stringify({
+                    success:false
+                }));
+            }
+        }],
+        /**
+         * @Method("list");
+         * @RequestMethod("GET");
+         *
+         */
+        list:function(req,res,next){
+            var self = this;
+            self.Tileset.count({},function(err,c){
+                if(err){
+                    self.endJson({
+                        success:false,
+                        errors:err
+                    });
+                }
+                else{
+                    var conditions = {
+                        sort:{created:'desc'}
+                    };
 
+                    var limit = req.query.limit | null;
+                    var page = req.query.page | null;
+
+
+                    conditions.limit = limit?limit:c;
+
+                    if(page){
+                        conditions.page = page;
+                    }
+
+
+                    self.Tileset.paginate({}, conditions).then(function(result){
+                        self.endJson({
+                            success:true,
+                            count:c,
+                            tilesets:result.docs
+                        });
+                    });
+                }
+            });
+        },
+        /**
+         * @Method("delete");
+         * @RequestMethod("DELETE");
+         */
+        delete:function(req,res,next){
+            var id = req.query.id;
+            id = [].concat(id);
+
+            var self = this;
+            self.Tileset.find({_id:{$in:id}},function(err,docs){
+                if(err || docs.length == 0){
+                    self.endJson({
+                        success:true
+                    });
+                }
+                else{
+                    self.Tileset.remove({_id:{$in:id}},function(err){
+                        if(err){
+                            self.endJson({
+                                success:false
+                            });
+                        }
+                        else{
+                            var callback = function(docs){
+                                if(docs.length > 0){
+                                    var doc = docs.pop();
+                                    fs.unlink(path.join(paths('webroot'),'tilesets',doc.file),function(err){
+                                        callback(docs);
+                                    });
+                                }
+                                else{
+                                    self.endJson({
+                                        success:true
+                                    });
+                                }
+                            };
+                            callback(docs);
+                        }
+                    });
+                }
+            });
         }
     }
 };

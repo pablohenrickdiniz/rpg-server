@@ -2,36 +2,43 @@ var defaultModel = require('rpg-node-mvc').Model;
 var deepmerge = require('deepmerge');
 
 var Tileset = {
-    name : 'User',
+    name : 'Tileset',
     _messages : {
-        image:{
+        file:{
             required:'A imagem deve ser enviada!'
         },
-        'grid.width':{
-            min:'A largura mínima deve ser de 16px'
+        width:{
+            required:'A largura deve ser informada!',
+            Number:'valor inválido para largura'
         },
-        'grid.height':{
-            min:'A altura mínima deve ser de 16px'
+        height:{
+            required:'A altura deve ser informada!',
+            Number:'valor inválido para altura'
+        },
+        created:{
+            Date:'Essa data é inválida'
         }
     },
     _schema : {
-        image:{
+        file:{
             type:String,
             required:true,
             trim:true
         },
-        grid:{
-            width:{
-                required:true,
-                type:Number,
-                min:16,
-                default:32
-            },
-            height:{
-                type:Number,
-                min:16,
-                default:32
-            }
+        width:{
+            type:Number,
+            required:true,
+            default:0
+        },
+        height:{
+            type:Number,
+            required:true,
+            default:0
+        },
+        created:{
+            type:Date,
+            required:true,
+            default:Date.now
         }
     },
     defaultConnection:'rpgbuilder'
