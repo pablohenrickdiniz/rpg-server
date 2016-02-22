@@ -75,12 +75,12 @@ module.exports = {
             var self = this;
 
             var type = req.query.type;
-            var conditions = {};
+            var query_conditions = {};
             if(type !== undefined){
-                conditions.type = type;
+                query_conditions.type = type;
             }
 
-            self.Graphic.count(conditions,function(err,c){
+            self.Graphic.count(query_conditions,function(err,c){
                 if(err){
                     self.endJson({
                         success:false,
@@ -102,11 +102,7 @@ module.exports = {
                         conditions.page = page;
                     }
 
-                    if(type !== undefined){
-                        conditions.type = type;
-                    }
-
-                    self.Graphic.paginate({}, conditions).then(function(result){
+                    self.Graphic.paginate(query_conditions, conditions).then(function(result){
                         self.endJson({
                             success:true,
                             count:c,
