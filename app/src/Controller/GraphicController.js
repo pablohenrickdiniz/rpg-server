@@ -11,8 +11,8 @@ var fs = require('fs');
 module.exports = {
     __constructor:function(){
         var self = this;
-        self.name = 'tilesets';
-        self.modelName = 'Tileset'
+        self.name = 'graphics';
+        self.modelName = 'Graphic'
     },
     methods:{
         /**
@@ -22,18 +22,20 @@ module.exports = {
         upload:[fileFilter,function(req,res,next){
             var files = req.files;
             var self = this;
-            if(files[0] != undefined){
+            var type = req.query.type;
+            if(files[0] != undefined && type !== undefined){
                 var name = crypto.randomBytes(20).toString('hex');
                 var result = [];
                 ImageComponent.createImage(files[0],{
                     name:name,
-                    dir:path.join(paths('webroot'),'tilesets')
+                    dir:path.join(paths('webroot'),'graphics',type)
                 },function(created,path){
                     if(created){
-                        self.Tileset.save({
+                        self.Graphic.save({
                             file:path,
                             width:req.body.width,
                             height:req.body.height,
+                            type:type,
                             created:Date.now()
                         },function(err,doc){
                             if(err){
@@ -46,7 +48,7 @@ module.exports = {
                                 res.end(JSON.stringify({
                                     success:true,
                                     doc:doc,
-                                    type:'tilesets'
+                                    type:type
                                 }));
                             }
                         });
@@ -71,7 +73,14 @@ module.exports = {
          */
         list:function(req,res,next){
             var self = this;
-            self.Tileset.count({},function(err,c){
+
+            var type = req.query.type;
+            var conditions = {};
+            if(type !== undefined){
+                conditions.type = type;
+            }
+
+            self.Graphic.count(conditions,function(err,c){
                 if(err){
                     self.endJson({
                         success:false,
@@ -93,12 +102,15 @@ module.exports = {
                         conditions.page = page;
                     }
 
+                    if(type !== undefined){
+                        conditions.type = type;
+                    }
 
-                    self.Tileset.paginate({}, conditions).then(function(result){
+                    self.Graphic.paginate({}, conditions).then(function(result){
                         self.endJson({
                             success:true,
                             count:c,
-                            tilesets:result.docs
+                            graphics:result.docs
                         });
                     });
                 }
@@ -113,14 +125,14 @@ module.exports = {
             id = [].concat(id);
 
             var self = this;
-            self.Tileset.find({_id:{$in:id}},function(err,docs){
+            self.Graphic.find({_id:{$in:id}},function(err,docs){
                 if(err || docs.length == 0){
                     self.endJson({
                         success:true
                     });
                 }
                 else{
-                    self.Tileset.remove({_id:{$in:id}},function(err){
+                    self.Graphic.remove({_id:{$in:id}},function(err){
                         if(err){
                             self.endJson({
                                 success:false
@@ -130,7 +142,7 @@ module.exports = {
                             var callback = function(docs){
                                 if(docs.length > 0){
                                     var doc = docs.pop();
-                                    fs.unlink(path.join(paths('webroot'),'tilesets',doc.file),function(err){
+                                    fs.unlink(path.join(paths('webroot'),doc.type,doc.file),function(err){
                                         callback(docs);
                                     });
                                 }

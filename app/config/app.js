@@ -33,7 +33,7 @@ module.exports = {
             replset: {}
         }
     },
-    port: 8080,
+    port: 9090,
     defaultLocale: {
         lang: 'pt-br'//,
         //options:{
@@ -45,8 +45,7 @@ module.exports = {
         // }
     },
     dirs:[
-        'animations',
-        'backgrounds',
-        'tilesets'
+        'graphics/tilesets',
+        'graphics/animations'
     ]
 };
