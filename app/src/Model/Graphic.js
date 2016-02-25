@@ -49,10 +49,7 @@ var Graphic = {
             required:true,
             default:Date.now
         }
-    },
-    _virtual:{
-        url:{}
-    },
+    }
     defaultConnection:'rpgbuilder'
 };
 
