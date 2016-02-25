@@ -103,10 +103,20 @@ module.exports = {
                     }
 
                     self.Graphic.paginate(query_conditions, conditions).then(function(result){
+                        var docs = result.docs;
+                        var fullUrl = req.protocol + '://' + req.get('host')+'/'+'graphics';
+
+                        docs.forEach(function(doc,index){
+                            var url = fullUrl+'/'+doc.type+'/'+doc.file;
+                            doc = doc.toObject();
+                            doc.url = url;
+                            docs[index] = doc;
+                        });
+
                         self.endJson({
                             success:true,
                             count:c,
-                            graphics:result.docs
+                            graphics:docs
                         });
                     });
                 }
