@@ -49,7 +49,7 @@ var Graphic = {
             required:true,
             default:Date.now
         }
-    }
+    },
     defaultConnection:'rpgbuilder'
 };
 

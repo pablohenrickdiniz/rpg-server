@@ -45,6 +45,10 @@ module.exports = {
                                 }));
                             }
                             else{
+                                var fullUrl = req.protocol + '://' + req.get('host')+'/'+'graphics';
+                                var url = fullUrl+'/'+doc.type+'/'+doc.file;
+                                doc = doc.toObject();
+                                doc.url = url;
                                 res.end(JSON.stringify({
                                     success:true,
                                     doc:doc,
